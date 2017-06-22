@@ -7,8 +7,8 @@ import { Target } from '../target';
 import { Logger } from '../../logger';
 import { ScreencastSession } from './screencast';
 
-declare var document: any
-declare var MouseEvent: any
+declare let document: any;
+declare let MouseEvent: any;
 
 interface IRange {
     startLine: number;
@@ -238,7 +238,8 @@ export abstract class IOSProtocol extends ProtocolAdapter {
     }
 
     private onDebuggerEnable(msg: any): Promise<any> {
-        this._target.callTarget('Debugger.setBreakpointsActive', { active: true }) 
+        this._target.callTarget('Debugger.setBreakpointsActive', { active: true });
+
         return Promise.resolve(msg);
     }
 
@@ -271,8 +272,8 @@ export abstract class IOSProtocol extends ProtocolAdapter {
                 msg.params.context.origin = msg.params.context.name;
             }
 
-            if(msg.params.context.isPageContext) {
-                this._lastPageExecutionContextId = msg.params.context.id
+            if (msg.params.context.isPageContext) {
+                this._lastPageExecutionContextId = msg.params.context.id;
             }
         }
         return Promise.resolve(msg);
@@ -542,19 +543,19 @@ export abstract class IOSProtocol extends ProtocolAdapter {
     }
 
     private onConsoleMessageAdded(msg: any): Promise<any> {
-        var type = '';
-        switch(msg.params.message.level ) {
+        let type = '';
+        switch (msg.params.message.level ) {
             case 'error':
-                type = 'error'
+                type = 'error';
                 break;
             case 'warning':
-                type = 'warning'
+                type = 'warning';
                 break;
             default:
-                type = msg.params.message.type
+                type = msg.params.message.type;
         }
 
-        var consoleMessage = { 
+        const consoleMessage = {
             type: type,
             args: msg.params.message.parameters,
             executionContextId: this._lastPageExecutionContextId,
@@ -562,10 +563,10 @@ export abstract class IOSProtocol extends ProtocolAdapter {
             stackTrace: {
                 callFrames: msg.params.message.stackTrace
             }
-        }
+        };
 
         this._target.fireEventToTools('Runtime.consoleAPICalled', consoleMessage);
-        
+
         return Promise.resolve(null);
     }
 
