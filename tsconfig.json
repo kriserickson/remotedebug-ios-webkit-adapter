@@ -9,6 +9,8 @@
     },
     "exclude": [
         "src/**/*.json",
+        "src/**/*.js",
+        "src/**/*.map",
         "node_modules"
     ]
 }

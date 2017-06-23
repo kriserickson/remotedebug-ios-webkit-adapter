@@ -2,10 +2,10 @@
 // Copyright (C) Microsoft. All rights reserved.
 //
 
-import { ProtocolAdapter } from '../protocol';
-import { Target } from '../target';
-import { Logger } from '../../logger';
-import { ScreencastSession } from './screencast';
+import {ProtocolAdapter} from '../protocol';
+import {Target} from '../target';
+import {Logger} from '../../logger';
+import {ScreencastSession} from './screencast';
 
 declare let document: any;
 declare let MouseEvent: any;
@@ -52,12 +52,21 @@ export abstract class IOSProtocol extends ProtocolAdapter {
         this._target.addMessageFilter('tools::Page.stopScreencast', (msg) => this.onStopScreencast(msg));
         this._target.addMessageFilter('tools::Page.screencastFrameAck', (msg) => this.onScreencastFrameAck(msg));
         this._target.addMessageFilter('tools::Page.getNavigationHistory', (msg) => this.onGetNavigationHistory(msg));
-        this._target.addMessageFilter('tools::Page.setOverlayMessage', (msg) => { msg.method = 'Debugger.setOverlayMessage'; return Promise.resolve(msg); });
-        this._target.addMessageFilter('tools::Page.configureOverlay', (msg) => { msg.method = 'Debugger.setOverlayMessage'; return Promise.resolve(msg); });
+        this._target.addMessageFilter('tools::Page.setOverlayMessage', (msg) => {
+            msg.method = 'Debugger.setOverlayMessage';
+            return Promise.resolve(msg);
+        });
+        this._target.addMessageFilter('tools::Page.configureOverlay', (msg) => {
+            msg.method = 'Debugger.setOverlayMessage';
+            return Promise.resolve(msg);
+        });
 
         this._target.addMessageFilter('tools::DOM.enable', (msg) => this.onDomEnable(msg));
         this._target.addMessageFilter('tools::DOM.setInspectMode', (msg) => this.onSetInspectMode(msg));
-        this._target.addMessageFilter('tools::DOM.setInspectedNode', (msg) => { msg.method = 'Console.addInspectedNode'; return Promise.resolve(msg); });
+        this._target.addMessageFilter('tools::DOM.setInspectedNode', (msg) => {
+            msg.method = 'Console.addInspectedNode';
+            return Promise.resolve(msg);
+        });
         this._target.addMessageFilter('tools::DOM.pushNodesByBackendIdsToFrontend', (msg) => this.onPushNodesByBackendIdsToFrontend(msg));
         this._target.addMessageFilter('tools::DOM.getBoxModel', (msg) => this.onGetBoxModel(msg));
         this._target.addMessageFilter('tools::DOM.getNodeForLocation', (msg) => this.onGetNodeForLocation(msg));
@@ -71,27 +80,57 @@ export abstract class IOSProtocol extends ProtocolAdapter {
         this._target.addMessageFilter('target::Debugger.scriptParsed', (msg) => this.onScriptParsed(msg));
 
         this._target.addMessageFilter('tools::Emulation.canEmulate', (msg) => this.onCanEmulate(msg));
-        this._target.addMessageFilter('tools::Emulation.setTouchEmulationEnabled', (msg) => { msg.method = 'Page.setTouchEmulationEnabled'; return Promise.resolve(msg); });
-        this._target.addMessageFilter('tools::Emulation.setScriptExecutionDisabled', (msg) => { msg.method = 'Page.setScriptExecutionDisabled'; return Promise.resolve(msg); });
-        this._target.addMessageFilter('tools::Emulation.setEmulatedMedia', (msg) => { msg.method = 'Page.setEmulatedMedia'; return Promise.resolve(msg); });
+        this._target.addMessageFilter('tools::Emulation.setTouchEmulationEnabled', (msg) => {
+            msg.method = 'Page.setTouchEmulationEnabled';
+            return Promise.resolve(msg);
+        });
+        this._target.addMessageFilter('tools::Emulation.setScriptExecutionDisabled', (msg) => {
+            msg.method = 'Page.setScriptExecutionDisabled';
+            return Promise.resolve(msg);
+        });
+        this._target.addMessageFilter('tools::Emulation.setEmulatedMedia', (msg) => {
+            msg.method = 'Page.setEmulatedMedia';
+            return Promise.resolve(msg);
+        });
 
-        this._target.addMessageFilter('tools::Rendering.setShowPaintRects', (msg) => { msg.method = 'Page.setShowPaintRects'; return Promise.resolve(msg); });
+        this._target.addMessageFilter('tools::Rendering.setShowPaintRects', (msg) => {
+            msg.method = 'Page.setShowPaintRects';
+            return Promise.resolve(msg);
+        });
 
         this._target.addMessageFilter('tools::Input.emulateTouchFromMouseEvent', (msg) => this.onEmulateTouchFromMouseEvent(msg));
 
-        this._target.addMessageFilter('tools::Log.clear', (msg) => { msg.method = 'Console.clearMessages'; return Promise.resolve(msg); });
-        this._target.addMessageFilter('tools::Log.disable', (msg) => { msg.method = 'Console.disable'; return Promise.resolve(msg); });
-        this._target.addMessageFilter('tools::Log.enable', (msg) => { msg.method = 'Console.enable'; return Promise.resolve(msg); });
+        this._target.addMessageFilter('tools::Log.clear', (msg) => {
+            msg.method = 'Console.clearMessages';
+            return Promise.resolve(msg);
+        });
+        this._target.addMessageFilter('tools::Log.disable', (msg) => {
+            msg.method = 'Console.disable';
+            return Promise.resolve(msg);
+        });
+        this._target.addMessageFilter('tools::Log.enable', (msg) => {
+            msg.method = 'Console.enable';
+            return Promise.resolve(msg);
+        });
         this._target.addMessageFilter('target::Console.messageAdded', (msg) => this.onConsoleMessageAdded(msg));
 
-        this._target.addMessageFilter('tools::Network.getCookies', (msg) => { msg.method = 'Page.getCookies'; return Promise.resolve(msg); });
-        this._target.addMessageFilter('tools::Network.deleteCookie', (msg) => { msg.method = 'Page.deleteCookie'; return Promise.resolve(msg); });
-        this._target.addMessageFilter('tools::Network.setMonitoringXHREnabled', (msg) => { msg.method = 'Console.setMonitoringXHREnabled'; return Promise.resolve(msg); });
+        this._target.addMessageFilter('tools::Network.getCookies', (msg) => {
+            msg.method = 'Page.getCookies';
+            return Promise.resolve(msg);
+        });
+        this._target.addMessageFilter('tools::Network.deleteCookie', (msg) => {
+            msg.method = 'Page.deleteCookie';
+            return Promise.resolve(msg);
+        });
+        this._target.addMessageFilter('tools::Network.setMonitoringXHREnabled', (msg) => {
+            msg.method = 'Console.setMonitoringXHREnabled';
+            return Promise.resolve(msg);
+        });
         this._target.addMessageFilter('tools::Network.canEmulateNetworkConditions', (msg) => this.onCanEmulateNetworkConditions(msg));
+        this._target.addMessageFilter('tools::Runtime.compileScript', msg => this.onCompileScript(msg));
 
         this._target.addMessageFilter('target::Runtime.executionContextCreated', (msg) => this.onExecutionContextCreated(msg));
         this._target.addMessageFilter('target::Runtime.evaluate', (msg) => this.onEvaluate(msg));
-
         this._target.addMessageFilter('target::Inspector.inspect', (msg) => this.onInspect(msg));
     }
 
@@ -238,7 +277,7 @@ export abstract class IOSProtocol extends ProtocolAdapter {
     }
 
     private onDebuggerEnable(msg: any): Promise<any> {
-        this._target.callTarget('Debugger.setBreakpointsActive', { active: true });
+        this._target.callTarget('Debugger.setBreakpointsActive', {active: true});
 
         return Promise.resolve(msg);
     }
@@ -276,6 +315,11 @@ export abstract class IOSProtocol extends ProtocolAdapter {
                 this._lastPageExecutionContextId = msg.params.context.id;
             }
         }
+        return Promise.resolve(msg);
+    }
+
+    private onCompileScript(msg: { id: number, error?: { code: number, data: any[], message: string }, method?: string, params?: any }): Promise<any> {
+        msg.method = 'Runtime.evaluate';
         return Promise.resolve(msg);
     }
 
@@ -401,18 +445,17 @@ export abstract class IOSProtocol extends ProtocolAdapter {
 
     private onGetBoxModel(msg: any): Promise<any> {
         const params = {
-            highlightConfig:
-            {
+            highlightConfig: {
                 showInfo: true,
                 showRulers: false,
                 showExtensionLines: false,
-                contentColor: { r: 111, g: 168, b: 220, a: 0.66 },
-                paddingColor: { r: 147, g: 196, b: 125, a: 0.55 },
-                borderColor: { r: 255, g: 229, b: 153, a: 0.66 },
-                marginColor: { r: 246, g: 178, b: 107, a: 0.66 },
-                eventTargetColor: { r: 255, g: 196, b: 196, a: 0.66 },
-                shapeColor: { r: 96, g: 82, b: 177, a: 0.8 },
-                shapeMarginColor: { r: 96, g: 82, b: 127, a: 0.6 },
+                contentColor: {r: 111, g: 168, b: 220, a: 0.66},
+                paddingColor: {r: 147, g: 196, b: 125, a: 0.55},
+                borderColor: {r: 255, g: 229, b: 153, a: 0.66},
+                marginColor: {r: 246, g: 178, b: 107, a: 0.66},
+                eventTargetColor: {r: 255, g: 196, b: 196, a: 0.66},
+                shapeColor: {r: 96, g: 82, b: 177, a: 0.8},
+                shapeMarginColor: {r: 96, g: 82, b: 127, a: 0.6},
                 displayAsMaterial: true
             },
             nodeId: msg.params.nodeId
@@ -425,9 +468,9 @@ export abstract class IOSProtocol extends ProtocolAdapter {
 
     private onGetNodeForLocation(msg: any): Promise<any> {
 
-        this._target.callTarget('Runtime.evaluate', { expression: 'document.elementFromPoint(' + msg.params.x + ',' + msg.params.y + ')' }).then((obj) => {
-            this._target.callTarget('DOM.requestNode', { objectId: obj.result.objectId }).then((result) => {
-                this._target.fireResultToTools(msg.id, { nodeId: result.nodeId });
+        this._target.callTarget('Runtime.evaluate', {expression: 'document.elementFromPoint(' + msg.params.x + ',' + msg.params.y + ')'}).then((obj) => {
+            this._target.callTarget('DOM.requestNode', {objectId: obj.result.objectId}).then((result) => {
+                this._target.fireResultToTools(msg.id, {nodeId: result.nodeId});
             });
         });
 
@@ -474,12 +517,12 @@ export abstract class IOSProtocol extends ProtocolAdapter {
 
     private onGetNavigationHistory(msg: any): Promise<any> {
         let href = '';
-        this._target.callTarget('Runtime.evaluate', { expression: 'window.location.href' }).then((result) => {
+        this._target.callTarget('Runtime.evaluate', {expression: 'window.location.href'}).then((result) => {
             href = result.result.value;
-            return this._target.callTarget('Runtime.evaluate', { expression: 'window.title' });
+            return this._target.callTarget('Runtime.evaluate', {expression: 'window.title'});
         }).then(result => {
             const title = result.result.value;
-            this._target.fireResultToTools(msg.id, { currentIndex: 0, entries: [{ id: 0, url: href, title: title }] });
+            this._target.fireResultToTools(msg.id, {currentIndex: 0, entries: [{id: 0, url: href, title: title}]});
         });
 
         return Promise.resolve(null);
@@ -490,22 +533,23 @@ export abstract class IOSProtocol extends ProtocolAdapter {
         function simulate(params: any) {
             const element = document.elementFromPoint(params.x, params.y);
             const e = new MouseEvent(params.type, {
-                screenX: params.x,
-                screenY: params.y,
-                clientX: 0,
-                clientY: 0,
-                ctrlKey: (params.modifiers & 2) === 2,
-                shiftKey: (params.modifiers & 8) === 8,
-                altKey: (params.modifiers & 1) === 1,
-                metaKey: (params.modifiers & 4) === 4,
-                button: params.button,
-                bubbles: true,
-                cancelable: false
-            }
+                    screenX: params.x,
+                    screenY: params.y,
+                    clientX: 0,
+                    clientY: 0,
+                    ctrlKey: (params.modifiers & 2) === 2,
+                    shiftKey: (params.modifiers & 8) === 8,
+                    altKey: (params.modifiers & 1) === 1,
+                    metaKey: (params.modifiers & 4) === 4,
+                    button: params.button,
+                    bubbles: true,
+                    cancelable: false
+                }
             );
             element.dispatchEvent(e);
             return element;
         }
+
         /* tslint:enable */
 
         switch (msg.params.type) {
@@ -524,10 +568,10 @@ export abstract class IOSProtocol extends ProtocolAdapter {
         }
 
         const exp = `(${simulate.toString()})(${JSON.stringify(msg.params)})`;
-        this._target.callTarget('Runtime.evaluate', { expression: exp }).then((result) => {
+        this._target.callTarget('Runtime.evaluate', {expression: exp}).then((result) => {
             if (msg.params.type === 'click') {
                 msg.params.type = 'mouseup';
-                this._target.callTarget('Runtime.evaluate', { expression: exp });
+                this._target.callTarget('Runtime.evaluate', {expression: exp});
             }
         });
 
@@ -544,7 +588,7 @@ export abstract class IOSProtocol extends ProtocolAdapter {
 
     private onConsoleMessageAdded(msg: any): Promise<any> {
         let type = '';
-        switch (msg.params.message.level ) {
+        switch (msg.params.message.level) {
             case 'error':
                 type = 'error';
                 break;
@@ -576,7 +620,7 @@ export abstract class IOSProtocol extends ProtocolAdapter {
                 header.isInline = false;
                 header.startLine = 0;
                 header.startColumn = 0;
-                this._target.fireEventToTools('CSS.styleSheetAdded', { header: header });
+                this._target.fireEventToTools('CSS.styleSheetAdded', {header: header});
             }
         });
     }
@@ -608,8 +652,8 @@ export abstract class IOSProtocol extends ProtocolAdapter {
                 for (let j = 0; j < cssStyle.cssProperties.length; j++) {
                     if (cssStyle.cssProperties[j].range &&
                         (cssStyle.cssProperties[j].range.startLine > disabled[i].range.startLine ||
-                            (cssStyle.cssProperties[j].range.startLine === disabled[i].range.startLine &&
-                                cssStyle.cssProperties[j].range.startColumn > disabled[i].range.startColumn))) {
+                        (cssStyle.cssProperties[j].range.startLine === disabled[i].range.startLine &&
+                        cssStyle.cssProperties[j].range.startColumn > disabled[i].range.startColumn))) {
                         index = j;
                         break;
                     }
@@ -680,7 +724,7 @@ export abstract class IOSProtocol extends ProtocolAdapter {
             }
         }
 
-        return { line: line, column: column };
+        return {line: line, column: column};
     }
 
     /**
